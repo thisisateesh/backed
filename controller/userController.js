@@ -1,7 +1,8 @@
 const userModels = require('../models/userModels');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-
+const SECRET_KEY = process.env.SECRET_KEY;
 exports.registerController= async(req,res)=>{
     try {
         const {name,email,password} = req.body;
@@ -55,6 +56,7 @@ exports.loginController= async(req,res)=>{
 
         }
         const isMatched = await bcrypt.compare(password,user.password);
+        const token = jwt.sign({"userId":user._id}, SECRET_KEY, {expiresIn:'1hr'} )
         if(!isMatched){
             return res.status(400).send({
                 success:false,
@@ -64,6 +66,7 @@ exports.loginController= async(req,res)=>{
         return res.status(200).send({
             success:true,
             massage:"Login Successfull",
+            token,
             user
 
         })

@@ -22,6 +22,7 @@ app.use('/api/v1/content',contentRoutes);
 
 const PORT = process.env.PORT|| 8080;
 const DEV_MODE = process.env.DEV_MODE;
+// const SECRET_KEY = process.env.SECRET_KEY;
 app.listen(PORT,()=>{
     console.log(`Server is running in ${DEV_MODE} on ${PORT} port`);
 })

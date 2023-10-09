@@ -9,6 +9,9 @@ const htmlDesSchema = new mongoose.Schema({
         type:String,
         required:[true,'Description is requred']
     },
+    code:{
+        type:String
+    },
     content:{
         type:mongoose.Types.ObjectId,
         ref:"Html",

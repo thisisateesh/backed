@@ -4,10 +4,11 @@ const htmlDescriptionModel = require('../models/htmlDesctiptionModel');
 const htmlModel = require('../models/htmlContentModels');
 const JeeMainModel = require('../models/jeeMainQue');
 const jeeMainDes = require('../models/jeeMainQueDes');
+const subscribeModel = require('../models/subscribeModel');
 
 
 
-exports.createContent=async(req,res)=>{
+exports.setContent=async(req,res)=>{
     try {
         const {title} = req.body;
         if(!title){
@@ -36,9 +37,9 @@ exports.createContent=async(req,res)=>{
 
 }
 
-exports.createDescription = async(req,res)=>{
+exports.setDescription = async(req,res)=>{
     try {
-        const {subtitle,subdescription,content} = req.body;
+        const {subtitle,subdescription,code,content} = req.body;
         if(!subtitle || !subdescription || !content){
             return res.status(401).send({
                 success:false,
@@ -52,7 +53,7 @@ exports.createDescription = async(req,res)=>{
                 massage:"Content is not match",
             });
         }
-        const descr = new htmlDescriptionModel({subtitle,subdescription,content});
+        const descr = new htmlDescriptionModel({subtitle,subdescription,code,content});
 
         const session = await mongoose.startSession();
         session.startTransaction();
@@ -149,7 +150,7 @@ exports.getHtmlDescriptionDetalis=async(req,res)=>{
     }
 }
 
-exports.createJeeMain = async(req,res)=>{
+exports.setJeeMain = async(req,res)=>{
     try {
         const {title} = req.body;
         if(!title){
@@ -221,9 +222,9 @@ exports.getJeeMainSingle = async(req,res)=>{
         })    
     }
 }
-exports.createJeeMainDes = async(req,res)=>{
+exports.setJeeMainDes = async(req,res)=>{
     try {
-        const {question,options,answer,content} = req.body;
+        const {question,queImg,options,answer,content} = req.body;
         if(!options || !content){
             return res.status(401).send({
                 success:false,
@@ -237,7 +238,7 @@ exports.createJeeMainDes = async(req,res)=>{
                 massage:"Content is not match",
             });
         }
-        const queImg = `/upload/${req.file.filename}`;
+        // const queImg = `/upload/${req.file.filename}`;
         const descr = new jeeMainDes({question,queImg,options,answer,content});
 
         const session = await mongoose.startSession();
@@ -286,5 +287,29 @@ exports.getJeeMainDes = async(req,res)=>{
             massage:"Error in description",
             error
         })   
+    }
+}
+exports.setSubscribe = async(req,res)=>{
+    try {
+        const {email} = req.body;
+        if(!email){
+            return res.status(400).send({
+                success:false,
+                massage:"Email is Required"
+            })
+        }
+        const data = new subscribeModel({email});
+        await data.save();
+        return res.status(200).send({
+            success:true,
+            massage:"Email is posted",
+            data
+        })
+    } catch (error) {
+        return res.status(500).send({
+            success:false,
+            massage:"Error in massage",
+            error
+        })
     }
 }
