@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:[true,'Password is Required'],
     },
+    role:{
+        type:Number,
+        default:0,
+    }
 },{timeStamp:true});
 const userModel = mongoose.model('User',userSchema);
 module.exports = userModel;

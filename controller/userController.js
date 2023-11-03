@@ -56,7 +56,7 @@ exports.loginController= async(req,res)=>{
 
         }
         const isMatched = await bcrypt.compare(password,user.password);
-        const token = jwt.sign({"userId":user._id}, SECRET_KEY, {expiresIn:'1hr'} )
+        const token =await jwt.sign({_id:user._id}, SECRET_KEY, {expiresIn:'6hr'} )
         if(!isMatched){
             return res.status(400).send({
                 success:false,
@@ -81,3 +81,14 @@ exports.loginController= async(req,res)=>{
     }
     
 }
+exports.testController = async (req,res)=>{
+    try {
+        res.status(200).send({
+            success:true,
+            massage:'Test Controller',
+        });
+    } catch (error) {
+        
+    }
+}
+
